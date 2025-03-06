@@ -1,0 +1,15 @@
+{
+  "name": "ocr-to-markdown",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "ocr2md": "src/cli.js"
+  },
+  "scripts": {
+    "lint": "echo 'lint placeholder'",
+    "test": "node --test"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
