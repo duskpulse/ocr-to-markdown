@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from 'node:fs';
 import { basename } from 'node:path';
+import { ocrImageToText, toMarkdown } from './ocr.js';
 
 function usage() {
   console.log(`Usage: ocr2md <image> [-o output.md]\n\nConverts an image to Markdown (stub).`);
 }
 
-function convertImageToMarkdownStub(inputPath) {
+async function convertImageToMarkdown(inputPath) {
   const name = basename(inputPath);
-  return `# OCR Result for ${name}\n\n> OCR not wired yet. Placeholder output.`;
+  const buf = readFileSync(inputPath);
+  const text = await ocrImageToText(buf);
+  const md = `# OCR Result for ${name}\n\n` + toMarkdown(text);
+  return md;
 }
 
 async function main() {
@@ -27,10 +31,9 @@ async function main() {
     process.exit(2);
   }
 
-  const md = convertImageToMarkdownStub(inPath);
+  const md = await convertImageToMarkdown(inPath);
   writeFileSync(outPath, md);
   console.log(`Wrote ${outPath}`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
-
